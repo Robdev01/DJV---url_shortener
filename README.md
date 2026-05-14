@@ -116,7 +116,7 @@ spring.jpa.properties.hibernate.format_sql=true
 ## 1. Clone o repositório
 
 ```bash
-git clone URL_DO_REPOSITORIO
+git clone [URL_DO_REPOSITORIO](https://github.com/Robdev01/DJV---url_shortener)
 ```
 
 ---
