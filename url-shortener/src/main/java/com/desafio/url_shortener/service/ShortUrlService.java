@@ -65,4 +65,23 @@ public class ShortUrlService {
 
         return builder.toString();
     }
+
+    public String getOriginalUrl(String shortCode) {
+
+        ShortUrl entity = repository
+                .findByShortCode(shortCode)
+                .orElseThrow(() ->
+                        new RuntimeException("URL not found")
+                );
+
+        if (entity.getExpiresAt()
+                .isBefore(LocalDateTime.now())) {
+
+            throw new RuntimeException("URL expired");
+        }
+
+        return entity.getOriginalUrl();
+    }
+
+
 }

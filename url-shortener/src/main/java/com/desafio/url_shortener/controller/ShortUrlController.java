@@ -11,13 +11,12 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class ShortUrlController {
 
     private final ShortUrlService service;
 
-    @PostMapping("/shorten-url")
+    @PostMapping("/api/v1/shorten-url")
     public ResponseEntity<ShortenUrlResponse> shortenUrl(
 
             @RequestBody
@@ -31,4 +30,21 @@ public class ShortUrlController {
 
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/{shortCode}")
+    public ResponseEntity<Void> redirect(
+
+            @PathVariable String shortCode
+
+    ) {
+
+        String originalUrl =
+                service.getOriginalUrl(shortCode);
+
+        return ResponseEntity
+                .status(302)
+                .header("Location", originalUrl)
+                .build();
+    }
+
 }
