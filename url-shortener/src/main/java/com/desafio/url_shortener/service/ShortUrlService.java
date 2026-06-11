@@ -1,5 +1,6 @@
 package com.desafio.url_shortener.service;
 
+import com.desafio.url_shortener.dto.ListShortUrlResponse;
 import com.desafio.url_shortener.dto.ShortenUrlRequest;
 import com.desafio.url_shortener.dto.ShortenUrlResponse;
 import com.desafio.url_shortener.entity.ShortUrl;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Random;
 
 @Service
@@ -83,5 +85,30 @@ public class ShortUrlService {
         return entity.getOriginalUrl();
     }
 
+    public List<ListShortUrlResponse> findAll() {
+
+        return repository
+                .findAll()
+                .stream()
+                .map(url -> new ListShortUrlResponse(
+                        url.getId(),
+                        url.getShortCode(),
+                        url.getOriginalUrl(),
+                        url.getCreatedAt(),
+                        url.getExpiresAt()
+                ))
+                .toList();
+    }
+
+    public void deleteById(Integer id) {
+
+        ShortUrl shortUrl = repository
+                .findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("URL not found")
+                );
+
+        repository.delete(shortUrl);
+    }
 
 }

@@ -1,5 +1,6 @@
 package com.desafio.url_shortener.controller;
 
+import com.desafio.url_shortener.dto.ListShortUrlResponse;
 import com.desafio.url_shortener.dto.ShortenUrlRequest;
 import com.desafio.url_shortener.dto.ShortenUrlResponse;
 import com.desafio.url_shortener.service.ShortUrlService;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
 
 @RestController
@@ -45,6 +47,26 @@ public class ShortUrlController {
                 .status(302)
                 .header("Location", originalUrl)
                 .build();
+    }
+
+    @GetMapping("/api/v1/shorten-url")
+    public ResponseEntity<List<ListShortUrlResponse>> findAll() {
+
+        return ResponseEntity.ok(
+                service.findAll()
+        );
+    }
+
+    @DeleteMapping("/api/v1/shorten-url/{id}")
+    public ResponseEntity<Void> delete(
+
+            @PathVariable Integer id
+
+    ) {
+
+        service.deleteById(id);
+
+        return ResponseEntity.noContent().build();
     }
 
 }
